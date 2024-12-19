@@ -85,7 +85,8 @@ public class myArrayList<T> implements List<T>{
             if (curIndex < 0 || curIndex >= size) {
                 throw new IllegalStateException();
             }
-            System.arraycopy(elements, curIndex + 1, elements, curIndex, size - curIndex - 1);
+
+            System.arraycopy(elements, curIndex, elements, curIndex - 1, size - curIndex);
             elements[--size] = null;
             if (curIndex == size) {
                 curIndex--;
@@ -97,7 +98,7 @@ public class myArrayList<T> implements List<T>{
             if (curIndex < 0 || curIndex >= size) {
                 throw new IllegalStateException();
             }
-            elements[curIndex] = e;
+            elements[curIndex - 1] = e;
         }
 
         @Override
@@ -241,10 +242,12 @@ public class myArrayList<T> implements List<T>{
     @SuppressWarnings("unchecked")
     public <T1> T1[] toArray(T1[] a) {
         if (a.length < size) {
-            return (T1[]) new Object[size];
+            return (T1[]) java.util.Arrays.copyOf(elements, size, a.getClass());
         }
 
-        System.arraycopy(elements, 0, a, 0, size);
+        for (int i = 0; i < size; i++) {
+            a[i] = (T1) elements[i];
+        }
 
         if (a.length > size) {
             a[size] = null;
@@ -288,7 +291,7 @@ public class myArrayList<T> implements List<T>{
         if (size >= oldCapacity) {
             int newCapacity = 2 * oldCapacity;
             Object[] newElements = new Object[newCapacity];
-            System.arraycopy(elements, 0, newElements, 0, size);
+            System.arraycopy(elements, 0, newElements, 0, oldCapacity);
             elements = newElements;
         }
     }
@@ -811,4 +814,5 @@ public class myArrayList<T> implements List<T>{
     public List<T> subList(int fromIndex, int toIndex) {
         throw new UnsupportedOperationException("subList method is not implemented.");
     }
+
 }
