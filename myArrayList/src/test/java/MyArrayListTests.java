@@ -482,4 +482,40 @@ public class MyArrayListTests {
         assertFalse(standardListIterator.hasPrevious());
 
     }
+
+    @Test
+    void testConstructors() {
+        myArrayList<String> myList = new myArrayList<>(2);
+        List<String> standardList = new ArrayList<>(2);
+
+        myList.add("A");
+        myList.add("B");
+        standardList.add("A");
+        standardList.add("B");
+
+        assertEquals(standardList.get(0), myList.get(0));
+        assertEquals(standardList.get(1), myList.get(1));
+        assertEquals(myList.size(), standardList.size());
+
+        assertThrows(IllegalArgumentException.class, () -> new myArrayList<>(-1));
+        assertThrows(IllegalArgumentException.class, () -> new ArrayList<>(-1));
+
+        Collection<String> collection = new ArrayList<>();
+
+        for (char c = 'A'; c < 'A' + 9; c++) {
+            collection.add(String.valueOf(c));
+        }
+
+        myArrayList<String> myList2 = new myArrayList<>(collection);
+        List<String> standardList2 = new ArrayList<>(collection);
+
+        assertEquals(myList2.size(), standardList2.size());
+        for (int i = 0; i < myList2.size(); i++) {
+            assertEquals(myList2.get(i), standardList2.get(i));
+        }
+
+        assertThrows(NullPointerException.class, () -> new myArrayList<>(null));
+        assertThrows(NullPointerException.class, () -> new ArrayList<>(null));
+
+    }
 }

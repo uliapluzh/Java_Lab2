@@ -10,6 +10,23 @@ public class myArrayList<T> implements List<T>{
         size = 0;
     }
 
+    public myArrayList(int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Capacity must be greater than 0:");
+        }
+        elements = new Object[capacity];
+        size = 0;
+    }
+
+    public myArrayList(Collection<?> c) {
+        if (c == null) {
+            throw new NullPointerException("Collection cannot be null");
+        }
+        elements = new Object[c.size()];
+        size = c.size();
+        System.arraycopy(c.toArray(), 0, elements, 0, size);
+    }
+
     private class myIterator implements Iterator<T> {
         private int curIndex = 0;
 
@@ -37,6 +54,9 @@ public class myArrayList<T> implements List<T>{
         }
 
         public myListIterator(int index) {
+            if (index < 0 || index > size) {
+                throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+            }
             this.curIndex = index;
         }
 
